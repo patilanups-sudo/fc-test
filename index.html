@@ -4,19 +4,18 @@
   <title>FC Test</title>
   <style>
     #ad-slot {
-      /* Match the actual iframe size */
-      width: 320px;
-      height: 480px;
+      width: 300px;
+      height: 250px;
       border: 2px solid red;
       background: #f0f0f0;
       overflow: visible !important;
       position: relative;
     }
-
     #ad-slot iframe {
-      overflow: visible !important;
-      display: block !important;
-      visibility: visible !important;
+      width: 300px !important;
+      height: 250px !important;
+      max-width: 300px !important;
+      max-height: 250px !important;
     }
   </style>
 </head>
@@ -26,25 +25,27 @@
   <p id="counter"></p>
   <p id="status" style="color:blue;">Loading ad...</p>
 
-  <!-- Ad Slot — updated to 320x480 -->
-  <div id="ad-slot"></div>
-
-  <!-- AdPrime Tag -->
-  <script async type="text/javascript" 
-    src="https://delta.adprime.com/?c=rtb&m=direct
-    &key=933028022eccdd65c9a0caee19123326">
-  </script>
+  <!-- Ad Slot 300x250 -->
+  <div id="ad-slot">
+    <script async type="text/javascript" 
+      src="https://delta.adprime.com/?c=rtb
+      &m=direct
+      &key=933028022eccdd65c9a0caee19123326
+      &w=300
+      &h=250">
+    </script>
+  </div>
 
   <!-- Counter -->
   <script>
     let count = localStorage.getItem('fc_loads') || 0;
     count++;
     localStorage.setItem('fc_loads', count);
-    document.getElementById('counter').innerText 
+    document.getElementById('counter').innerText
       = 'Page loaded: ' + count + ' times';
   </script>
 
-  <!-- Check ad after 3 seconds -->
+  <!-- Ad Check -->
   <script>
     setTimeout(function() {
       var slot    = document.getElementById('ad-slot');
@@ -53,12 +54,12 @@
 
       if (iframes.length > 0) {
         var iframe = iframes[0];
-        status.style.color   = 'green';
-        status.innerText = '✅ Ad loaded - '
+        status.style.color = 'green';
+        status.innerText   = '✅ Ad loaded - '
           + iframe.width + 'x' + iframe.height;
       } else {
-        status.style.color   = 'red';
-        status.innerText = '❌ No ad found';
+        status.style.color = 'red';
+        status.innerText   = '❌ No ad found';
       }
     }, 3000);
   </script>
