@@ -29,24 +29,37 @@
   <div id="ad-slot">
 
     <!-- Custom S2C Tag — macros replaced for testing -->
-    <script type="text/javascript" 
-      src="https://delta.adprime.com/?c=rtb
-      &m=js
-      &type=s2c
-      &key=933028022eccdd65c9a0caee19123326
-      &ip=1.1.1.1
-      &ua=Mozilla/5.0
-      &domain=patilanups-sudo.github.io
-      &page=/fc-test/
-      &w=300
-      &h=250
-      &dw=1280
-      &dh=800
-      &lat=0
-      &lon=0
-      &bidfloor=0
-      &gdpr_consent=">
-    </script>
+    <script>
+  (function() {
+    var ip      = '1.1.1.1'; 
+    var ua      = encodeURIComponent(navigator.userAgent);
+    var domain  = encodeURIComponent(window.location.hostname);
+    var page    = encodeURIComponent(window.location.pathname);
+    var dw      = window.screen.width;
+    var dh      = window.screen.height;
+
+    var tag     = document.createElement('script');
+    tag.type    = 'text/javascript';
+    tag.src     = 'https://delta.adprime.com/?c=rtb'
+                + '&m=js'
+                + '&type=s2c'
+                + '&key=933028022eccdd65c9a0caee19123326'
+                + '&ip='     + ip
+                + '&ua='     + ua
+                + '&domain=' + domain
+                + '&page='   + page
+                + '&w=300'
+                + '&h=250'
+                + '&dw='     + dw
+                + '&dh='     + dh
+                + '&lat=0'
+                + '&lon=0'
+                + '&bidfloor=0'
+                + '&gdpr_consent=';
+
+    document.getElementById('ad-slot').appendChild(tag);
+  })();
+</script>
 
   </div>
 
