@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FC Test</title>
+</head>
+<body>
+
+  <h2>FC Cap Test Page</h2>
+  <p id="counter"></p>
+
+  <!-- Ad Slot 300x250 -->
+  <div style="width:300px; height:250px; border:2px solid red;">
+    <script async type="text/javascript" 
+      src="https://delta.adprime.com/?c=rtb&m=direct&key=933028022eccdd65c9a0caee19123326">
+    </script>
+  </div>
+
+  <!-- Impression Counter -->
+  <script>
+    let count = localStorage.getItem('fc_loads') || 0;
+    count++;
+    localStorage.setItem('fc_loads', count);
+    document.getElementById('counter').innerText 
+      = 'Page loaded: ' + count + ' times';
+    console.log('FC Test - Load #' + count);
+  </script>
+
+</body>
+</html>
