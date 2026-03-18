@@ -2,29 +2,22 @@
 <html>
 <head>
   <title>FC Test</title>
- <style>
-  #ad-slot {
-    width: 300px;
-    height: 250px;
-    border: 2px solid red;
-    overflow: hidden;
-    position: relative;
-  }
-
-  /* Force ALL iframes inside slot to 300x250 */
-  #ad-slot iframe {
-    width: 300px !important;
-    height: 250px !important;
-    border: none !important;
-    display: block !important;
-  }
-
-  /* Scale down if creative is 320x480 */
-  #ad-slot iframe[width="320"] {
-    transform: scale(0.85);
-    transform-origin: top left;
-  }
-</style>
+  <style>
+    #ad-slot {
+      width: 300px;
+      height: 250px;
+      border: 2px solid red;
+      background: #f0f0f0;
+      overflow: visible;
+      position: relative;
+    }
+    #ad-slot iframe {
+      width: 300px !important;
+      height: 250px !important;
+      border: none;
+      display: block;
+    }
+  </style>
 </head>
 <body>
 
@@ -32,15 +25,9 @@
   <p id="counter"></p>
   <p id="status" style="color:blue;">Loading ad...</p>
 
-  <!-- Ad Slot 300x250 -->
+  <!-- Ad Slot — single line src, no breaks -->
   <div id="ad-slot">
-    <script async type="text/javascript" 
-      src="https://delta.adprime.com/?c=rtb
-      &m=direct
-      &key=933028022eccdd65c9a0caee19123326
-      &w=300
-      &h=250">
-    </script>
+    <script async type="text/javascript" src="https://delta.adprime.com/?c=rtb&m=direct&key=933028022eccdd65c9a0caee19123326&w=300&h=250"></script>
   </div>
 
   <!-- Counter -->
@@ -48,36 +35,28 @@
     let count = localStorage.getItem('fc_loads') || 0;
     count++;
     localStorage.setItem('fc_loads', count);
-    document.getElementById('counter').innerText
-      = 'Page loaded: ' + count + ' times';
+    document.getElementById('counter').innerText = 'Page loaded: ' + count + ' times';
   </script>
 
   <!-- Ad Check -->
   <script>
     setTimeout(function() {
-  var slot    = document.getElementById('ad-slot');
-  var iframes = slot.getElementsByTagName('iframe');
-  var images  = slot.getElementsByTagName('img');
-  var status  = document.getElementById('status');
+      var slot    = document.getElementById('ad-slot');
+      var iframes = slot.getElementsByTagName('iframe');
+      var images  = slot.getElementsByTagName('img');
+      var status  = document.getElementById('status');
 
-  if (iframes.length > 0) {
-    status.style.color = 'green';
-    status.innerText   = '✅ Ad iframe loaded - '
-      + iframes[0].width + 'x' 
-      + iframes[0].height;
-
-  } else if (images.length > 0) {
-    status.style.color = 'green';
-    status.innerText   = '✅ Ad image loaded - '
-      + images[0].width + 'x'
-      + images[0].height;
-
-  } else {
-    status.style.color = 'red';
-    status.innerText   = '❌ No ad rendered - '
-      + 'check console';
-  }
-}, 3000);
+      if (iframes.length > 0) {
+        status.style.color = 'green';
+        status.innerText   = '✅ Ad loaded - ' + iframes[0].width + 'x' + iframes[0].height;
+      } else if (images.length > 0) {
+        status.style.color = 'green';
+        status.innerText   = '✅ Ad image loaded - ' + images[0].width + 'x' + images[0].height;
+      } else {
+        status.style.color = 'red';
+        status.innerText   = '❌ No ad rendered - check console';
+      }
+    }, 3000);
   </script>
 
 </body>
