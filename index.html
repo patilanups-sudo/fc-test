@@ -2,6 +2,23 @@
 <html>
 <head>
   <title>FC Test</title>
+  <style>
+    #ad-slot {
+      /* Match the actual iframe size */
+      width: 320px;
+      height: 480px;
+      border: 2px solid red;
+      background: #f0f0f0;
+      overflow: visible !important;
+      position: relative;
+    }
+
+    #ad-slot iframe {
+      overflow: visible !important;
+      display: block !important;
+      visibility: visible !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -9,33 +26,16 @@
   <p id="counter"></p>
   <p id="status" style="color:blue;">Loading ad...</p>
 
-  <!-- Ad Slot -->
-  <div id="ad-slot" 
-       style="width:300px;
-              height:250px;
-              border:2px solid red;
-              background:#f0f0f0;">
-  </div>
+  <!-- Ad Slot — updated to 320x480 -->
+  <div id="ad-slot"></div>
 
-  <!-- AdPrime Tag — placed AFTER the div -->
-  <script>
-    var s = window.location.protocol === 'https:' ? 1 : 0;
-    var adDiv = document.getElementById('ad-slot');
-    var script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://delta.adprime.com/?c=rtb&m=direct&key=933028022eccdd65c9a0caee19123326&secure=' + s;
-    
-    script.onload = function() {
-      document.getElementById('status').innerText = '✅ Tag loaded';
-    };
-    script.onerror = function() {
-      document.getElementById('status').innerText = '❌ Tag failed to load';
-    };
-    
-    adDiv.appendChild(script);
+  <!-- AdPrime Tag -->
+  <script async type="text/javascript" 
+    src="https://delta.adprime.com/?c=rtb&m=direct
+    &key=933028022eccdd65c9a0caee19123326">
   </script>
 
-  <!-- Page load counter -->
+  <!-- Counter -->
   <script>
     let count = localStorage.getItem('fc_loads') || 0;
     count++;
@@ -44,21 +44,21 @@
       = 'Page loaded: ' + count + ' times';
   </script>
 
-  <!-- Check for ad after 3 seconds -->
+  <!-- Check ad after 3 seconds -->
   <script>
     setTimeout(function() {
-      var slot     = document.getElementById('ad-slot');
-      var iframes  = slot.getElementsByTagName('iframe');
-      var status   = document.getElementById('status');
+      var slot    = document.getElementById('ad-slot');
+      var iframes = slot.getElementsByTagName('iframe');
+      var status  = document.getElementById('status');
 
       if (iframes.length > 0) {
-        status.style.color = 'green';
-        status.innerText = '✅ Ad rendered - ' 
-          + iframes.length + ' iframe found';
+        var iframe = iframes[0];
+        status.style.color   = 'green';
+        status.innerText = '✅ Ad loaded - '
+          + iframe.width + 'x' + iframe.height;
       } else {
-        status.style.color = 'red';
-        status.innerText = '❌ No ad rendered - '
-          + 'check console for errors';
+        status.style.color   = 'red';
+        status.innerText = '❌ No ad found';
       }
     }, 3000);
   </script>
