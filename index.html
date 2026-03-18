@@ -2,22 +2,29 @@
 <html>
 <head>
   <title>FC Test</title>
-  <style>
-    #ad-slot {
-      width: 300px;
-      height: 250px;
-      border: 2px solid red;
-      background: #f0f0f0;
-      overflow: visible !important;
-      position: relative;
-    }
-    #ad-slot iframe {
-      width: 300px !important;
-      height: 250px !important;
-      max-width: 300px !important;
-      max-height: 250px !important;
-    }
-  </style>
+ <style>
+  #ad-slot {
+    width: 300px;
+    height: 250px;
+    border: 2px solid red;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Force ALL iframes inside slot to 300x250 */
+  #ad-slot iframe {
+    width: 300px !important;
+    height: 250px !important;
+    border: none !important;
+    display: block !important;
+  }
+
+  /* Scale down if creative is 320x480 */
+  #ad-slot iframe[width="320"] {
+    transform: scale(0.85);
+    transform-origin: top left;
+  }
+</style>
 </head>
 <body>
 
