@@ -3,24 +3,21 @@
 <head>
   <title>FC Test</title>
   <style>
-  #ad-slot {
-    width: 300px;
-    height: 250px;
-    border: 2px solid red;
-    overflow: hidden;        /* clips 320x480 to 300x250 */
-    position: relative;
-  }
-
-  /* Force iframe to 300x250 */
-  #ad-slot iframe {
-    width: 300px !important;
-    height: 250px !important;
-    max-width: 300px !important;
-    max-height: 250px !important;
-    border: none !important;
-    display: block !important;
-  }
-</style>
+    #ad-slot {
+      width: 300px;
+      height: 250px;
+      border: 2px solid red;
+      background: #f0f0f0;
+      overflow: hidden;
+      position: relative;
+    }
+    #ad-slot iframe {
+      width: 300px !important;
+      height: 250px !important;
+      border: none !important;
+      display: block !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -28,9 +25,29 @@
   <p id="counter"></p>
   <p id="status" style="color:blue;">Loading ad...</p>
 
-  <!-- Ad Slot — single line src, no breaks -->
+  <!-- Ad Slot -->
   <div id="ad-slot">
-    <script async type="text/javascript" src="https://delta.adprime.com/?c=rtb&m=direct&key=933028022eccdd65c9a0caee19123326&w=300&h=250"></script>
+
+    <!-- Custom S2C Tag — macros replaced for testing -->
+    <script type="text/javascript" 
+      src="https://delta.adprime.com/?c=rtb
+      &m=js
+      &type=s2c
+      &key=933028022eccdd65c9a0caee19123326
+      &ip=1.1.1.1
+      &ua=Mozilla/5.0
+      &domain=patilanups-sudo.github.io
+      &page=/fc-test/
+      &w=300
+      &h=250
+      &dw=1280
+      &dh=800
+      &lat=0
+      &lon=0
+      &bidfloor=0
+      &gdpr_consent=">
+    </script>
+
   </div>
 
   <!-- Counter -->
@@ -38,46 +55,39 @@
     let count = localStorage.getItem('fc_loads') || 0;
     count++;
     localStorage.setItem('fc_loads', count);
-    document.getElementById('counter').innerText = 'Page loaded: ' + count + ' times';
+    document.getElementById('counter').innerText 
+      = 'Page loaded: ' + count + ' times';
   </script>
 
   <!-- Ad Check -->
   <script>
-  setTimeout(function() {
-    var slot    = document.getElementById('ad-slot');
-    var iframes = slot.getElementsByTagName('iframe');
-    var images  = slot.getElementsByTagName('img');
-    var status  = document.getElementById('status');
+    setTimeout(function() {
+      var slot    = document.getElementById('ad-slot');
+      var iframes = slot.getElementsByTagName('iframe');
+      var images  = slot.getElementsByTagName('img');
+      var status  = document.getElementById('status');
 
-    if (iframes.length > 0) {
-      var iframe = iframes[0];
-      
-      // Get size from multiple sources
-      var w = iframe.width 
-           || iframe.style.width 
-           || iframe.offsetWidth 
-           || iframe.getBoundingClientRect().width;
-           
-      var h = iframe.height 
-           || iframe.style.height 
-           || iframe.offsetHeight 
-           || iframe.getBoundingClientRect().height;
+      if (iframes.length > 0) {
+        var iframe = iframes[0];
+        var w = iframe.offsetWidth  
+             || iframe.getBoundingClientRect().width;
+        var h = iframe.offsetHeight 
+             || iframe.getBoundingClientRect().height;
+        status.style.color = 'green';
+        status.innerText   = '✅ Ad loaded - ' + w + 'x' + h;
 
-      status.style.color = 'green';
-      status.innerText   = '✅ Ad loaded - ' + w + 'x' + h;
+      } else if (images.length > 0) {
+        var img = images[0];
+        status.style.color = 'green';
+        status.innerText   = '✅ Ad image loaded - '
+          + img.naturalWidth + 'x' + img.naturalHeight;
 
-    } else if (images.length > 0) {
-      var img = images[0];
-      status.style.color = 'green';
-      status.innerText   = '✅ Ad image loaded - ' 
-        + img.naturalWidth + 'x' + img.naturalHeight;
-
-    } else {
-      status.style.color = 'red';
-      status.innerText   = '❌ No ad rendered - check console';
-    }
-  }, 3000);
-</script>
+      } else {
+        status.style.color = 'red';
+        status.innerText   = '❌ No ad rendered - check console';
+      }
+    }, 3000);
+  </script>
 
 </body>
 </html>
