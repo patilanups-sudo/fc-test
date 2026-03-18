@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+Same %20 spaces issue again — you used the hardcoded version with line breaks. Use the JavaScript auto-fill version instead which has no line break issues:
+
+Replace ENTIRE index.html with this:
+html<!DOCTYPE html>
 <html>
 <head>
   <title>FC Test</title>
@@ -25,79 +28,47 @@
   <p id="counter"></p>
   <p id="status" style="color:blue;">Loading ad...</p>
 
-  <!-- Ad Slot -->
-  <div id="ad-slot">
+  <div id="ad-slot"></div>
 
-    <!-- Custom S2C Tag — macros replaced for testing -->
-    <script>
-  (function() {
-    var ip      = '1.1.1.1'; 
-    var ua      = encodeURIComponent(navigator.userAgent);
-    var domain  = encodeURIComponent(window.location.hostname);
-    var page    = encodeURIComponent(window.location.pathname);
-    var dw      = window.screen.width;
-    var dh      = window.screen.height;
-
-    var tag     = document.createElement('script');
-    tag.type    = 'text/javascript';
-    tag.src     = 'https://delta.adprime.com/?c=rtb'
-                + '&m=js'
-                + '&type=s2c'
-                + '&key=933028022eccdd65c9a0caee19123326'
-                + '&ip='     + ip
-                + '&ua='     + ua
-                + '&domain=' + domain
-                + '&page='   + page
-                + '&w=300'
-                + '&h=250'
-                + '&dw='     + dw
-                + '&dh='     + dh
-                + '&lat=0'
-                + '&lon=0'
-                + '&bidfloor=0'
-                + '&gdpr_consent=';
-
-    document.getElementById('ad-slot').appendChild(tag);
-  })();
-</script>
-
-  </div>
-
-  <!-- Counter -->
   <script>
-    let count = localStorage.getItem('fc_loads') || 0;
-    count++;
-    localStorage.setItem('fc_loads', count);
-    document.getElementById('counter').innerText 
-      = 'Page loaded: ' + count + ' times';
+    (function() {
+      var ua     = encodeURIComponent(navigator.userAgent);
+      var domain = encodeURIComponent(window.location.hostname);
+      var page   = encodeURIComponent(window.location.pathname);
+      var dw     = window.screen.width;
+      var dh     = window.screen.height;
+      var url    = "https://delta.adprime.com/?c=rtb&m=js&type=s2c&key=933028022eccdd65c9a0caee19123326&ip=1.1.1.1&ua=" + ua + "&domain=" + domain + "&page=" + page + "&w=300&h=250&dw=" + dw + "&dh=" + dh + "&lat=0&lon=0&bidfloor=0&gdpr_consent=";
+      var tag    = document.createElement("script");
+      tag.type   = "text/javascript";
+      tag.src    = url;
+      document.getElementById("ad-slot").appendChild(tag);
+    })();
   </script>
 
-  <!-- Ad Check -->
+  <script>
+    var count = localStorage.getItem("fc_loads") || 0;
+    count++;
+    localStorage.setItem("fc_loads", count);
+    document.getElementById("counter").innerText = "Page loaded: " + count + " times";
+  </script>
+
   <script>
     setTimeout(function() {
-      var slot    = document.getElementById('ad-slot');
-      var iframes = slot.getElementsByTagName('iframe');
-      var images  = slot.getElementsByTagName('img');
-      var status  = document.getElementById('status');
-
+      var slot    = document.getElementById("ad-slot");
+      var iframes = slot.getElementsByTagName("iframe");
+      var images  = slot.getElementsByTagName("img");
+      var status  = document.getElementById("status");
       if (iframes.length > 0) {
-        var iframe = iframes[0];
-        var w = iframe.offsetWidth  
-             || iframe.getBoundingClientRect().width;
-        var h = iframe.offsetHeight 
-             || iframe.getBoundingClientRect().height;
-        status.style.color = 'green';
-        status.innerText   = '✅ Ad loaded - ' + w + 'x' + h;
-
+        var w = iframes[0].offsetWidth || iframes[0].getBoundingClientRect().width;
+        var h = iframes[0].offsetHeight || iframes[0].getBoundingClientRect().height;
+        status.style.color = "green";
+        status.innerText   = "✅ Ad loaded - " + w + "x" + h;
       } else if (images.length > 0) {
-        var img = images[0];
-        status.style.color = 'green';
-        status.innerText   = '✅ Ad image loaded - '
-          + img.naturalWidth + 'x' + img.naturalHeight;
-
+        status.style.color = "green";
+        status.innerText   = "✅ Ad image loaded - " + images[0].naturalWidth + "x" + images[0].naturalHeight;
       } else {
-        status.style.color = 'red';
-        status.innerText   = '❌ No ad rendered - check console';
+        status.style.color = "red";
+        status.innerText   = "❌ No ad rendered - check console";
       }
     }, 3000);
   </script>
