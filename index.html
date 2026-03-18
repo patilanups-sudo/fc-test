@@ -40,24 +40,41 @@
 
   <!-- Ad Check -->
   <script>
-    setTimeout(function() {
-      var slot    = document.getElementById('ad-slot');
-      var iframes = slot.getElementsByTagName('iframe');
-      var images  = slot.getElementsByTagName('img');
-      var status  = document.getElementById('status');
+  setTimeout(function() {
+    var slot    = document.getElementById('ad-slot');
+    var iframes = slot.getElementsByTagName('iframe');
+    var images  = slot.getElementsByTagName('img');
+    var status  = document.getElementById('status');
 
-      if (iframes.length > 0) {
-        status.style.color = 'green';
-        status.innerText   = '✅ Ad loaded - ' + iframes[0].width + 'x' + iframes[0].height;
-      } else if (images.length > 0) {
-        status.style.color = 'green';
-        status.innerText   = '✅ Ad image loaded - ' + images[0].width + 'x' + images[0].height;
-      } else {
-        status.style.color = 'red';
-        status.innerText   = '❌ No ad rendered - check console';
-      }
-    }, 3000);
-  </script>
+    if (iframes.length > 0) {
+      var iframe = iframes[0];
+      
+      // Get size from multiple sources
+      var w = iframe.width 
+           || iframe.style.width 
+           || iframe.offsetWidth 
+           || iframe.getBoundingClientRect().width;
+           
+      var h = iframe.height 
+           || iframe.style.height 
+           || iframe.offsetHeight 
+           || iframe.getBoundingClientRect().height;
+
+      status.style.color = 'green';
+      status.innerText   = '✅ Ad loaded - ' + w + 'x' + h;
+
+    } else if (images.length > 0) {
+      var img = images[0];
+      status.style.color = 'green';
+      status.innerText   = '✅ Ad image loaded - ' 
+        + img.naturalWidth + 'x' + img.naturalHeight;
+
+    } else {
+      status.style.color = 'red';
+      status.innerText   = '❌ No ad rendered - check console';
+    }
+  }, 3000);
+</script>
 
 </body>
 </html>
