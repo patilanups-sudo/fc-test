@@ -55,20 +55,29 @@
   <!-- Ad Check -->
   <script>
     setTimeout(function() {
-      var slot    = document.getElementById('ad-slot');
-      var iframes = slot.getElementsByTagName('iframe');
-      var status  = document.getElementById('status');
+  var slot    = document.getElementById('ad-slot');
+  var iframes = slot.getElementsByTagName('iframe');
+  var images  = slot.getElementsByTagName('img');
+  var status  = document.getElementById('status');
 
-      if (iframes.length > 0) {
-        var iframe = iframes[0];
-        status.style.color = 'green';
-        status.innerText   = '✅ Ad loaded - '
-          + iframe.width + 'x' + iframe.height;
-      } else {
-        status.style.color = 'red';
-        status.innerText   = '❌ No ad found';
-      }
-    }, 3000);
+  if (iframes.length > 0) {
+    status.style.color = 'green';
+    status.innerText   = '✅ Ad iframe loaded - '
+      + iframes[0].width + 'x' 
+      + iframes[0].height;
+
+  } else if (images.length > 0) {
+    status.style.color = 'green';
+    status.innerText   = '✅ Ad image loaded - '
+      + images[0].width + 'x'
+      + images[0].height;
+
+  } else {
+    status.style.color = 'red';
+    status.innerText   = '❌ No ad rendered - '
+      + 'check console';
+  }
+}, 3000);
   </script>
 
 </body>
