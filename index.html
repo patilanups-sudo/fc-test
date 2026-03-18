@@ -8,21 +8,53 @@
   <h2>FC Cap Test Page</h2>
   <p id="counter"></p>
 
-  <!-- Ad Slot 300x250 -->
-  <div style="width:300px; height:250px; border:2px solid red;">
+  <!-- Ad Container — explicit size important -->
+  <div id="ad-container" 
+    style="width:300px; 
+           height:250px; 
+           border:2px solid red;
+           display:block;
+           overflow:visible;">
+    
     <script async type="text/javascript" 
-      src="https://delta.adprime.com/?c=rtb&m=direct&key=933028022eccdd65c9a0caee19123326">
+      src="https://delta.adprime.com/?c=rtb
+      &m=direct
+      &key=933028022eccdd65c9a0caee19123326">
     </script>
+
   </div>
 
-  <!-- Impression Counter -->
+  <!-- Debug info -->
+  <div id="debug" style="margin-top:20px; 
+                          font-family:monospace;">
+    <p id="status">Waiting for ad...</p>
+  </div>
+
   <script>
+    // Page load counter
     let count = localStorage.getItem('fc_loads') || 0;
     count++;
     localStorage.setItem('fc_loads', count);
     document.getElementById('counter').innerText 
       = 'Page loaded: ' + count + ' times';
-    console.log('FC Test - Load #' + count);
+
+    // Check if ad loaded
+    window.addEventListener('load', function() {
+      var container = document.getElementById('ad-container');
+      var iframes   = container.getElementsByTagName('iframe');
+      var scripts   = container.getElementsByTagName('script');
+      
+      setTimeout(function() {
+        if(iframes.length > 0) {
+          document.getElementById('status').innerText 
+            = '✅ Ad iframe detected - ' 
+            + iframes.length + ' iframe(s)';
+        } else {
+          document.getElementById('status').innerText 
+            = '❌ No ad iframe found - possible render issue';
+        }
+      }, 3000); // wait 3 sec for ad to load
+    });
   </script>
 
 </body>
