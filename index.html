@@ -1,5 +1,4 @@
-
-html<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <title>FC Test</title>
@@ -8,26 +7,36 @@ html<!DOCTYPE html>
       width: 300px;
       height: 250px;
       border: 2px solid red;
-      background: #f0f0f0;
+      background: transparent;
       overflow: hidden;
       position: relative;
     }
-    #ad-slot iframe {
-      width: 300px !important;
-      height: 250px !important;
-      border: none !important;
-      display: block !important;
+    #debug {
+      margin-top: 20px;
+      padding: 15px;
+      background: #1a1a1a;
+      color: #00ff00;
+      font-family: monospace;
+      font-size: 13px;
+      width: 400px;
+      border-radius: 4px;
     }
+    #debug p { margin: 4px 0; }
   </style>
 </head>
 <body>
 
   <h2>FC Cap Test Page</h2>
-  <p id="counter"></p>
-  <p id="status" style="color:blue;">Loading ad...</p>
 
+  <!-- Debug Panel -->
+  <div id="debug">
+    <p>⏱ Loading...</p>
+  </div>
+
+  <!-- Ad Slot -->
   <div id="ad-slot"></div>
 
+  <!-- AdPrime Tag -->
   <script>
     (function() {
       var ua     = encodeURIComponent(navigator.userAgent);
@@ -43,31 +52,34 @@ html<!DOCTYPE html>
     })();
   </script>
 
+  <!-- Debug Info -->
   <script>
-    var count = localStorage.getItem("fc_loads") || 0;
-    count++;
-    localStorage.setItem("fc_loads", count);
-    document.getElementById("counter").innerText = "Page loaded: " + count + " times";
-  </script>
+    var loadCount = parseInt(localStorage.getItem("fc_loads") || "0") + 1;
+    localStorage.setItem("fc_loads", loadCount);
 
-  <script>
+    var debug = document.getElementById("debug");
+
     setTimeout(function() {
       var slot    = document.getElementById("ad-slot");
       var iframes = slot.getElementsByTagName("iframe");
-      var images  = slot.getElementsByTagName("img");
-      var status  = document.getElementById("status");
-      if (iframes.length > 0) {
-        var w = iframes[0].offsetWidth || iframes[0].getBoundingClientRect().width;
-        var h = iframes[0].offsetHeight || iframes[0].getBoundingClientRect().height;
-        status.style.color = "green";
-        status.innerText   = "✅ Ad loaded - " + w + "x" + h;
-      } else if (images.length > 0) {
-        status.style.color = "green";
-        status.innerText   = "✅ Ad image loaded - " + images[0].naturalWidth + "x" + images[0].naturalHeight;
-      } else {
-        status.style.color = "red";
-        status.innerText   = "❌ No ad rendered - check console";
-      }
+      var adFired = iframes.length > 0;
+
+      debug.innerHTML = ""
+        + "<p>📅 Time       : " + new Date().toLocaleTimeString() + "</p>"
+        + "<p>🔄 Page loads : " + loadCount + "</p>"
+        + "<p>🌐 Browser    : " + navigator.userAgent.split(")")[0].split("(")[1] + "</p>"
+        + "<p>📺 Screen     : " + window.screen.width + "x" + window.screen.height + "</p>"
+        + "<p>─────────────────────────────</p>"
+        + "<p>📡 Ad Request : ✅ Fired</p>"
+        + "<p>🖼 iframe     : " + (adFired ? "✅ Found (" + iframes.length + ")" : "❌ Not found") + "</p>"
+        + "<p>─────────────────────────────</p>"
+        + "<p style='color:" + (adFired ? "#00ff00" : "#ff4444") + ";font-weight:bold;'>"
+        + (adFired ? "✅ IMPRESSION FIRED" : "❌ NO IMPRESSION — FC CAP HIT or NO BID")
+        + "</p>"
+        + "<p>─────────────────────────────</p>"
+        + "<p>📊 Check AdPrime Endpoint #595</p>"
+        + "<p>📊 Check Beeswax Campaign report</p>";
+
     }, 3000);
   </script>
 
